@@ -125,6 +125,7 @@ def tsc_wrapped_tsconfig(
         **kwargs
     )
     config["bazelOptions"]["nodeModulesPrefix"] = "/".join([p for p in [
+        ctx.configuration.bin_dir.path,
         ctx.attr.node_modules.label.workspace_root,
         ctx.attr.node_modules.label.package,
         "node_modules",
