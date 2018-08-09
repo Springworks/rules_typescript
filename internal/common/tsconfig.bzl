@@ -104,6 +104,26 @@ def create_tsconfig(
                 "*",
             ] if p]))
 
+            # Temporary fix 
+            # for https://github.com/bazelbuild/rules_typescript/issues/248
+            node_modules_mappings.append("/".join([p for p in [
+                ctx.configuration.bin_dir.path,
+                ctx.attr.node_modules.label.workspace_root,
+                ctx.attr.node_modules.label.package,
+                "node_modules",
+                "*",
+            ] if p]))
+
+            node_modules_mappings.append("/".join([p for p in [
+                ctx.configuration.bin_dir.path,
+                ctx.attr.node_modules.label.workspace_root,
+                ctx.attr.node_modules.label.package,
+                "node_modules",
+                "@types",
+                "*",
+            ] if p]))
+
+
         module_roots = {
             "*": node_modules_mappings,
             ctx.workspace_name + "/*": base_path_mappings,
