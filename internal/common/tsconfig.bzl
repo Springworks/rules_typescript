@@ -84,9 +84,14 @@ def create_tsconfig(
 
         node_modules_mappings = []
         if (hasattr(ctx.attr, "node_modules")):
+            node_modules_prefix = ""
+            if hasattr(ctx.attr.node_modules, "attr") and hasattr(ctx.attr.node_modules.attr, "node_modules_prefix"):
+                node_modules_prefix = ctx.attr.node_modules.attr.node_modules_prefix 
+
             node_modules_mappings.append("/".join([p for p in [
                 ctx.attr.node_modules.label.workspace_root,
                 ctx.attr.node_modules.label.package,
+                node_modules_prefix,
                 "node_modules",
                 "*",
             ] if p]))
@@ -99,6 +104,7 @@ def create_tsconfig(
             node_modules_mappings.append("/".join([p for p in [
                 ctx.attr.node_modules.label.workspace_root,
                 ctx.attr.node_modules.label.package,
+                node_modules_prefix,
                 "node_modules",
                 "@types",
                 "*",
@@ -110,6 +116,7 @@ def create_tsconfig(
                 ctx.configuration.bin_dir.path,
                 ctx.attr.node_modules.label.workspace_root,
                 ctx.attr.node_modules.label.package,
+                node_modules_prefix,
                 "node_modules",
                 "*",
             ] if p]))
@@ -118,6 +125,7 @@ def create_tsconfig(
                 ctx.configuration.bin_dir.path,
                 ctx.attr.node_modules.label.workspace_root,
                 ctx.attr.node_modules.label.package,
+                node_modules_prefix,
                 "node_modules",
                 "@types",
                 "*",

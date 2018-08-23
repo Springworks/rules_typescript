@@ -124,10 +124,16 @@ def tsc_wrapped_tsconfig(
         devmode_manifest = devmode_manifest,
         **kwargs
     )
+
+    node_modules_prefix = ""
+    if hasattr(ctx.attr.node_modules, "attr") and hasattr(ctx.attr.node_modules.attr, "node_modules_prefix"):
+      node_modules_prefix = ctx.attr.node_modules.attr.node_modules_prefix 
+
     config["bazelOptions"]["nodeModulesPrefix"] = "/".join([p for p in [
         ctx.configuration.bin_dir.path,
         ctx.attr.node_modules.label.workspace_root,
         ctx.attr.node_modules.label.package,
+        node_modules_prefix,
         "node_modules",
     ] if p])
 
